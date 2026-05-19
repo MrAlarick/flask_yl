@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Delete subreddit</h1>
+    <form action="/yl_host/delete_subreddit/{{ subreddit.name }}" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        {% if message %}<div class="alert alert-success" role="alert">{{ message }}</div>{% endif %}
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+{% endblock %}

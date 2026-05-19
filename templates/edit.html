@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit profile</h1>
+    <form action="/yl_host/edit_user" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control") }}<br>
+            {% for error in form.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.bio.label }}<br>
+            {{ form.bio(class="form-control") }}<br>
+            {% for error in form.bio.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.profile_picture.label }}<br>
+            {{ form.profile_picture(class="form-control") }}<br>
+            {% for error in form.profile_picture.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        {% if message %}<div class="alert alert-success" role="alert">{{ message }}</div>{% endif %}
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+<a class="btn btn-danger" href="/yl_host/delete_account">Delete account</a>
+{% endblock %}

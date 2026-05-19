@@ -1,0 +1,322 @@
+/* ==========================================================================
+   1. Core Variables & Base Elements
+   ========================================================================== */
+:root {
+    --bg-color: #dae0e6;       /* Reddit light-gray workspace */
+    --card-bg: #ffffff;        /* Crisp card backdrops */
+    --border-color: #ccc;      /* Neutral borders */
+    --border-hover: #878a8c;   /* Elevated hover boundaries */
+    --text-main: #1a1a1b;      /* Primary text tracking */
+    --text-muted: #787c7e;     /* Subtext / Timestamp gray */
+    --reddit-blue: #0079d3;    /* Traditional brand links */
+    --nav-height: 56px;        /* Top header sizing threshold */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding-top: calc(var(--nav-height) + 20px); /* Pushes down content beneath the fixed navbar */
+    margin: 0;
+}
+
+/* Base Link Architecture */
+a {
+    color: var(--reddit-blue);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Standard Main Layout Container Constraints */
+.container, main, [block="content"] {
+    max-width: 850px !important;
+    margin: 0 auto;
+    padding: 0 15px 40px 15px;
+}
+
+/* ==========================================================================
+   2. Fixed Top Navigation Bar (Polishing base.html Structure)
+   ========================================================================== */
+/* ==========================================================================
+   2. Fixed Top Navigation Bar (Clean & Structured)
+   ========================================================================== */
+.navbar {
+    height: 56px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure navbar avatar matches standard sizing cleanly */
+.nav-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: cover;
+    border: 1px solid #e2e8f0;
+}
+
+/* Adjust the main content layout so it doesn't get hidden behind the fixed header */
+body {
+    background-color: #dae0e6;
+    color: #1a1a1b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding-top: 80px; /* Gives perfect breathing room below the 56px navbar */
+    margin: 0;
+}
+
+/* Rounded pills on buttons give it that authentic Reddit workspace feel */
+.rounded-pill {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   3. Content Feed & Card Blocks (home, subreddit, user profiles)
+   ========================================================================== */
+div.border.p-3.mb-3.position-relative {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 16px !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+div.border.p-3.mb-3.position-relative:hover {
+    border-color: var(--border-hover) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Feed Title Management */
+div.border h3 a.stretched-link {
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #222222 !important;
+}
+
+/* Context Subheaders */
+div.border .mb-2 h4,
+.comment-header {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Profile pages & Subreddit headers text formatting */
+h1, h2 {
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+h3 { font-size: 1.1rem; color: var(--text-muted); }
+
+/* ==========================================================================
+   4. Image Optimization & Avatar Uniform Scaling
+   ========================================================================== */
+img[src*="/static/img/pfp/"],
+img[src*="/static/img/srp/"] {
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f2f5;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* 1. Small Feed Icons */
+div.border .mb-2 h4 img,
+div.border h4 img[src*="/static/img/srp/"] {
+    width: 24px !important;
+    height: 24px !important;
+    margin-right: 6px;
+}
+
+/* 2. Post Title Medium Icons */
+h3 img[src*="/static/img/srp/"] {
+    width: 32px !important;
+    height: 32px !important;
+    margin-right: 8px;
+}
+
+/* 3. Community Landing Header Banners */
+h1 img[src*="/static/img/srp/"],
+h1 img[src*="/static/img/pfp/"] {
+    width: 64px !important;
+    height: 64px !important;
+    margin-right: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* ==========================================================================
+   5. Main Responsive Carousel Component Limits
+   ========================================================================== */
+.carousel {
+    max-width: 100%;
+    background-color: #0b0c0d;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.carousel-inner img {
+    max-height: 500px;
+    width: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   6. Interactive Voting Alignment & Scale (Post Cards vs Comments)
+   ========================================================================== */
+/* Master voting asset properties */
+a[href*="upvote"] img,
+a[href*="downvote"] img {
+    vertical-align: middle;
+    transition: transform 0.1s ease;
+}
+a[href*="upvote"]:hover img,
+a[href*="downvote"]:hover img {
+    transform: scale(1.18);
+}
+
+/* Post Cards Voting Layout Rules */
+a[href*="/upvote/"] img,
+a[href*="/downvote/"] img {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Comment Tree Sizing Logic */
+a[href*="/upvote_comment/"] img,
+a[href*="/downvote_comment/"] img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Inline Value Metrics formatting */
+div.border span,
+.comment-footer span {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    margin: 0 4px;
+}
+
+/* Comments count metric */
+img[src*="comment.png"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   7. Threaded Structural Hierarchies (post.html, reply.html)
+   ========================================================================== */
+.comment-thread {
+    background-color: rgba(0, 0, 0, 0.005);
+    margin-left: 1.5rem !important;
+    padding-left: 1rem !important;
+    border-left: 2px solid #edeff1 !important;
+    margin-bottom: 12px !important;
+    border-radius: 0 4px 4px 0;
+    transition: border-left-color 0.15s ease;
+}
+
+.comment-thread:hover {
+    border-left-color: var(--border-hover) !important;
+}
+
+.comment-header img {
+    width: 22px !important;
+    height: 22px !important;
+    margin-right: 4px;
+}
+
+.comment-body {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    padding: 4px 0;
+}
+
+/* User image uploads inside nested threads */
+.comment-image img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 6px;
+    margin: 8px 0;
+    border: 1px solid var(--border-color);
+}
+
+/* Component wrapper spacing for footer fields */
+.comment-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.comment-footer .reply-btn {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.comment-footer .reply-btn:hover {
+    color: var(--reddit-blue);
+}
+
+/* ==========================================================================
+   8. Standard Form Card Interfaces (Inputs, Prompts, Sheets)
+   ========================================================================== */
+form {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    margin: 20px 0;
+}
+
+form p {
+    margin-bottom: 16px;
+}
+
+form p label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+/* Input boxes & Textareas custom defaults */
+form .form-control {
+    border: 1px solid #edeff1;
+    background-color: #fcfcfb;
+    border-radius: 4px;
+    padding: 10px 12px;
+    color: var(--text-main);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+form .form-control:focus {
+    border-color: var(--reddit-blue);
+    background-color: var(--card-bg);
+    box-shadow: 0 0 0 3px rgba(0, 121, 211, 0.15);
+    outline: none;
+}
+
+/* Error/Success Flash Banners customization override */
+.alert {
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+/* Moderation / Identity Context Badges */
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    vertical-align: middle;
+}

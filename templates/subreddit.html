@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.is_admin %}
+{% if subreddit.is_banned %}
+<a href="/yl_host/unban_subreddit/{{ subreddit.name }}" class="btn btn-success">Unban subreddit</a>
+{% else %}
+<a href="/yl_host/ban_subreddit/{{ subreddit.name }}" class="btn btn-danger">Ban subreddit</a>
+{% endif %}
+{% endif %}
+{% if current_user.is_authenticated and current_user in subreddit.moderators %}
+<br>
+<a href="/yl_host/edit_subreddit/{{ subreddit.name }}" class="btn btn-primary">Edit subreddit info</a>
+{% endif %}
+{% if current_user.is_authenticated and current_user.id == subreddit.creator_id %}
+<a href="/yl_host/add_moderator/{{ subreddit.name }}" class="btn btn-success">Add moderator</a>
+<a href="/yl_host/remove_moderator/{{ subreddit.name }}" class="btn btn-danger">Remove moderator</a>
+{% endif %}
+<h1><img src="/yl_host/static/img/srp/{{ subreddit.name }}"> {{ subreddit.name }}
+    </h1>
+{% if current_user.is_authenticated %}
+{% if current_user in subreddit.members %}
+{% if current_user.id != subreddit.creator_id %}
+<a href="/yl_host/leave/{{ subreddit.name }}" class="btn btn-outline-primary">joined</a>
+{% endif %}
+{% if current_user not in subreddit.banned_users %}
+<a href="/yl_host/create_post/{{ subreddit.name }}" class="btn btn-info">Create post</a>
+{% endif %}
+{% else %}
+<a href="/yl_host/join/{{ subreddit.name }}" class="btn btn-primary">join</a>
+{% endif %}
+{% endif %}
+<h3>{{ subreddit.no_members }} members</h3>
+<p>{{ subreddit.description }}</p>
+
+{% for post in subreddit.posts %}
+<div class="border p-3 mb-3 position-relative">
+
+    <!-- User Profile Header (Safe from parser issues) -->
+    <div class="mb-2">
+        <a href="/yl_host/user/{{ post.author.username }}" class="text-decoration-none position-relative z-3">
+            <h4>
+                <img src="/yl_host/static/img/pfp/{{ post.author.username }}" alt="" style="width:24px; height:24px; border-radius:50%;">
+                @{{ post.author.username }}
+            </h4>
+        </a>
+    </div>
+
+    <!-- The actual link to the full post details page -->
+    <!-- Bootstrap's 'stretched-link' expands this invisible link to cover the entire parent div -->
+    <h3>
+        <a href="/yl_host/post/{{ post.id }}" class="stretched-link text-decoration-none text-dark">
+            {{ post.title }}
+        </a>
+    </h3>
+
+    <!-- Carousel Component -->
+    {% if post.no_images %}
+    <div id="carousel-{{ post.id }}" class="carousel slide mb-2 position-relative z-3">
+      <div class="carousel-inner">
+          {% for i in range(post.no_images) %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+              <img src="/yl_host/static/img/post/{{ post.id }}_{{ i }}" class="d-block w-100">
+          </div>
+          {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ post.id }}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ post.id }}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    {% endif %}
+
+
+    <!-- Post Text Preview -->
+    <p>{{ post.text|truncate(200, True, "…")|safe }}</p>
+
+    <!-- Interactive Footer Controls (Upvote / Downvote / Comments) -->
+    <!-- 'position-relative z-3' keeps these buttons clickable over the stretched-link background -->
+    <div class="d-flex align-items-center gap-3">
+        <div class="position-relative z-3">
+            <a href="/yl_host/upvote/{{ post.id }}">
+                <img src="/yl_host/static/img/upvote{% if current_user not in post.upvoted_by %}_outline{% endif %}.png">
+            </a>
+            <span>{{ post.rating }}</span>
+            <a href="/yl_host/downvote/{{ post.id }}" class="position-relative z-3">
+                <img src="/yl_host/static/img/downvote{% if current_user not in post.downvoted_by %}_outline{% endif %}.png">
+            </a>
+        </div>
+
+        <!-- Fixed the syntax error on post.no_comments here as well -->
+        <span>
+            <img src="/yl_host/static/img/comment.png"> {{ post.no_comments }}
+        </span>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

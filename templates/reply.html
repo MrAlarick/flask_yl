@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+    <div class="comment-thread ms-3 ps-2 border-start border-secondary mb-3">
+        <div class="comment-header d-flex align-items-center gap-2 small text-muted">
+            <img src="/yl_host/static/img/pfp/{{ comment.author.username }}">
+            <strong>@{{ comment.author.username }}</strong>
+            <span>{{ comment.date.strftime("%d/%m/%y %H:%M") }} (UTC)</span> <!-- Replace with actual timestamp if available -->
+        </div>
+
+        <div class="comment-body my-1">
+            {{ comment.text }}
+        </div>
+    </div>
+
+<form action="/yl_host/reply/{{ comment.id }}" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text(class="form-control") }}<br>
+            {% for error in form.text.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.image.label }}<br>
+            {{ form.image(class="form-control") }}<br>
+            {% for error in form.image.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        {% if message %}<div class="alert alert-success" role="alert">{{ message }}</div>{% endif %}
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+{% endblock %}
